@@ -3,14 +3,37 @@ import { dummyCreationData } from '../assets/assets';
 import { Protect } from '@clerk/clerk-react';
 import { Gem, Sparkles } from 'lucide-react';
 // 1. Import the CreationItem component
-import CreationItem from '../components/CreationItem'; 
+import CreationItem from '../components/CreationItem';
+import { useAuth } from '@clerk/clerk-react'
+import axios from 'axios'
+import Markdown from 'react-markdown'
+import toast from 'react-hot-toast'
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL
 
 const Dashboard = () => {
   const [creations, setCreations] = useState([]);
+  const [loading, setLoading] = useState(false)
+  const [content, setContent] = useState('')
+
+  const { getToken } = useAuth()
 
   const getDashboardData = async () => {
-    setCreations(dummyCreationData);
-  };
+    try {
+      const { data } = await axios.get('/api/user/get-user-creations', {
+        headers: { Authorization: `Bearer ${await getToken()}` }
+      })
+
+      if (data.success) {
+        setCreations(data.creations)
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
 
   useEffect(() => {
     getDashboardData();
@@ -45,16 +68,25 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Recent Creations Section */}
-      <div className='mt-8'>
-        <p className='mb-4 font-semibold text-gray-700'>Recent Creations</p>
-        <div className='space-y-3'>
-          {creations.map((item) => (
-            <CreationItem key={item.id} item={item} />
-          ))}
-        </div>
-      </div>
-    </div>
+      {
+        loading ? (
+          <div className='flex justify-center items-center h-3/4'>
+            <div className='animate-spin rounded-full h-11 w-11 border-3 border-purple-500 border-t-transparent'></div>
+          </div>
+        ) :
+          (
+            <div className='mt-8'>
+              <p className='mb-4 font-semibold text-gray-700'>Recent Creations</p>
+              <div className='space-y-3'>
+                {creations.map((item) => (
+                  <CreationItem key={item.id} item={item} />
+                ))}
+              </div>
+            </div >
+          )
+      }
+
+    </div >
   );
 };
 

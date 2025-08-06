@@ -12,17 +12,14 @@ import RemoveBackground from './pages/RemoveBackground'
 import Community from './pages/Community'
 import WriteArticle from './pages/WriteArticle'
 import { useAuth } from '@clerk/clerk-react'
+import {Toaster} from 'react-hot-toast'
 
 
 const App = () => {
 
-  const {getToken} = useAuth()
-  useEffect(() => {
-    getToken().then((token)=> console.log(token));
-  }, [])
-
   return (
     <div>
+      <Toaster />
       <Routes>
         <Route path='/' element={<Home/>}/>
 
