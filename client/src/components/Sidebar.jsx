@@ -66,14 +66,15 @@ const Sidebar = ({ sidebar, setSidebar }) => {
                 <div className="flex items-center justify-between">
                     {/* User Info */}
                     <div
-                        className="flex items-center gap-2 cursor-pointer" 
+                        className="flex items-center gap-2 cursor-pointer"
                         onClick={() => openUserProfile()}
                     >
                         <img src={user.imageUrl} alt="User Avatar" className="w-9 h-9 rounded-full" />
                         <div>
                             <h3 className="text-sm font-semibold leading-tight">{user.fullName}</h3>
-                            {/* You can make the plan name dynamic later */}
-                            <p className="text-xs text-gray-500">Premium Plan</p>
+                            <p className="text-xs text-gray-500">
+                                {user.plan ? user.plan : "Free Plan"}
+                            </p>
                         </div>
                     </div>
                     {/* Logout Button */}
@@ -88,7 +89,7 @@ const Sidebar = ({ sidebar, setSidebar }) => {
             </div>
 
             <div>
-                
+
             </div>
         </div>
     );
