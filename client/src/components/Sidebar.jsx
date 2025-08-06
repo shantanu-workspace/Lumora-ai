@@ -1,4 +1,4 @@
-import { useClerk, useUser } from '@clerk/clerk-react';
+import { Protect, useClerk, useUser } from '@clerk/clerk-react';
 import { Eraser, FileText, Hash, House, Image, Scissors, SquarePen, Users, LogOut } from 'lucide-react';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
@@ -72,8 +72,8 @@ const Sidebar = ({ sidebar, setSidebar }) => {
                         <img src={user.imageUrl} alt="User Avatar" className="w-9 h-9 rounded-full" />
                         <div>
                             <h3 className="text-sm font-semibold leading-tight">{user.fullName}</h3>
-                            <p className="text-xs text-gray-500">
-                                {user.plan ? user.plan : "Free Plan"}
+                            <p className='text-xs text-gray-500'>
+                                <Protect plan='premium' fallback='Free'>Premium</Protect> Plan
                             </p>
                         </div>
                     </div>
