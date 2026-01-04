@@ -153,7 +153,6 @@ export const removeImageBackground = async (req, res) => {
             ]
         });
 
-        // --- FIX: Changed double quotes to single quotes for the string literal ---
         await sql`INSERT INTO creations(user_id, prompt, content, type) VALUES (${userId}, 'Remove Background from the image', ${secure_url}, 'image')`;
 
         res.json({ success: true, content: secure_url });
